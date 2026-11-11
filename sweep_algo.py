@@ -20,6 +20,8 @@ class KELTNER_ALGO:
     def analyzing_the_data(self):
         main_data=self.opening_the_main_data()
         master_closing_prices=[]
+        bmw=[]
+
         master_opening_prices=[]
         current_high_prev_close=[]
         current_low_prev_close=[]
@@ -27,6 +29,7 @@ class KELTNER_ALGO:
         master_low_prices=[]
         current_high_current_low=[]
         finalized_tr=[]
+        atr_values=[]
         jk=[]
         k=[]
         main_list=[]
@@ -126,6 +129,34 @@ class KELTNER_ALGO:
         for r,h in zip(new_ranger,required_indices):
             master_values=sum(finalized_tr[r:h])
             finalized_values.append(master_values)
+
+
+
+        #########  ATR CALCULATION ##########
+
+
+        for finals in finalized_tr[:-1]:
+            bmw.append(finals)
+
+        finalized_values.reverse()
+        bmw.reverse()
+
+        finalized_answers=[x*9+y/10 for x,y in zip(bmw,finalized_values[0:-1])]
+        for coco in finalized_answers:
+            coca=abs(coco)
+            atr_values.append(coca)
+
+
+        for index,his_,in enumerate(atr_values):
+            main_data[index+1]['ATR']=abs(his_)
+        
+
+        
+
+
+
+
+          
         
 
 
