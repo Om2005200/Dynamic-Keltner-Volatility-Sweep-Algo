@@ -25,6 +25,8 @@ class KELTNER_ALGO:
         current_low_prev_close=[]
         master_high_prices=[]
         master_low_prices=[]
+        current_high_current_low=[]
+        finalized_tr=[]
         jk=[]
         k=[]
         o=[]
@@ -71,7 +73,7 @@ class KELTNER_ALGO:
             hh=abs(v)
             current_high_prev_close.append(hh)
 
-
+        ######## CURRENT_LOW_PREV_CLOSE ########
 
         for price in master_low_prices[:-1]:
             jk.append(price)
@@ -85,8 +87,59 @@ class KELTNER_ALGO:
             current_low_prev_close.append(ty)
 
 
+        ######## CURRENT_HIGH_CURRENT_LOW  ########
+
+
+        final_results_=[x-y for x,y in zip(master_high_prices,master_low_prices)]
+        for tt in final_results_:
+            uu=abs(tt)
+            current_high_current_low.append(uu)
+
+
+
+        for x,y,z in zip(current_high_current_low,current_low_prev_close,current_high_current_low):
+            maximum_values=max(x,y,z)
+            finalized_tr.append(maximum_values)
+
+        for index_,his,in enumerate(finalized_tr):
+            main_data[index_+1]['ATR_']=abs(his)
+
+
+        with open(r"C:\Users\dasho\divergence_test.json",'w') as ws:
+            json.dump(main_data,ws,indent=4)
+
+
+        
+
+
+        
+
+        
+
+
+
+
 
             
+
+        
+
+
+
+        
+
+
+
+            
+            
+
+
+
+
+
+
+
+
 
 
 
