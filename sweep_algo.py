@@ -29,7 +29,10 @@ class KELTNER_ALGO:
         finalized_tr=[]
         jk=[]
         k=[]
-        o=[]
+        main_list=[]
+        required_indices=[]
+        finalized_values=[]
+       
 
         sma_200_list=[]
         
@@ -102,11 +105,40 @@ class KELTNER_ALGO:
             finalized_tr.append(maximum_values)
 
         for index_,his,in enumerate(finalized_tr):
-            main_data[index_+1]['ATR_']=abs(his)
+            main_data[index_+1]['TR']=abs(his)
+
+
+
+        for sonam in finalized_tr:
+            main_vals=finalized_tr.index(sonam)
+            if main_vals not in main_list:
+                main_list.append(main_vals)
+            if main_data in main_list:
+                main_list_last_value=main_list[-1]
+                new_index_value=main_list_last_value+1
+                main_list.append(new_index_value)
+        original_length=len(finalized_tr)
+        new_list_length=len(main_list)
+        new_ranger=main_list[0:new_list_length-1]
+        main_list.append(new_ranger)
+        for new_vals in new_ranger[10:]:
+            required_indices.append(new_vals)
+        for r,h in zip(new_ranger,required_indices):
+            master_values=sum(finalized_tr[r:h])
+            finalized_values.append(master_values)
+        
+
+
 
 
         with open(r"C:\Users\dasho\divergence_test.json",'w') as ws:
             json.dump(main_data,ws,indent=4)
+
+
+        
+
+
+        
 
 
         
