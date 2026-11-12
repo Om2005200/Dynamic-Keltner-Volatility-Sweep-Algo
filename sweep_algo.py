@@ -31,6 +31,8 @@ class KELTNER_ALGO:
         finalized_tr=[]
         atr_values=[]
         jk=[]
+        lk=[]
+        plus_dm=[]
         k=[]
         main_list=[]
         required_indices=[]
@@ -69,25 +71,19 @@ class KELTNER_ALGO:
             sma_200_list.append(sma_200)
 
         ####### CURRENT HIGH PREV_CLOSE ########
-        for master_prices in master_high_prices[:-1]:
-            k.append(master_prices)
-        master_closing_prices.reverse()
-        k.reverse()
+        
 
-        finalized_results=[x-y for x,y in zip(k,master_closing_prices[0:-1])]
+        finalized_results=[x-y for x,y in zip(master_high_prices[1:],master_closing_prices[0:-1])]
+        #finalized_results.reverse()
         for v in finalized_results:
             hh=abs(v)
             current_high_prev_close.append(hh)
 
         ######## CURRENT_LOW_PREV_CLOSE ########
 
-        for price in master_low_prices[:-1]:
-            jk.append(price)
 
-        master_closing_prices.reverse()
-        jk.reverse()
-
-        final_results=[x-y for x,y in zip(jk,master_closing_prices[0:-1])]
+        final_results=[x-y for x,y in zip(master_low_prices[1:],master_closing_prices[0:-1])]
+        #final_results.reverse()
         for gg in final_results:
             ty=abs(gg)
             current_low_prev_close.append(ty)
@@ -149,6 +145,25 @@ class KELTNER_ALGO:
 
         for index,his_,in enumerate(atr_values):
             main_data[index+1]['ATR']=abs(his_)
+
+
+
+        ############ +DM ############
+
+
+        main_results=[x-y for x,y in zip(master_high_prices[1:],master_high_prices[0:-1])]
+        
+
+
+
+
+
+
+
+
+
+
+        
         
 
         
