@@ -33,6 +33,7 @@ class KELTNER_ALGO:
         jk=[]
         lk=[]
         plus_dm=[]
+        negative_dm=[]
         k=[]
         main_list=[]
         required_indices=[]
@@ -148,10 +149,43 @@ class KELTNER_ALGO:
 
 
 
-        ############ +DM ############
+        ############ +DM    & -DM  ############
+
+        plus_dm_results=[x-y for x,y in zip(master_high_prices[1:],master_high_prices[0:-1])]
+        negative_dm_results=[x-y for x,y  in zip(master_low_prices[1:],master_low_prices[0:-1])]
+        for val,vals in zip(plus_dm_results,negative_dm_results):
+            if val>vals:
+                plus_dm.append(val)
+                negative_dm.append(0)
+            elif val<vals:
+                negative_dm.append(vals)
+                plus_dm.append(0)
+            elif val==vals:
+                negative_dm.append(0)
+                plus_dm.append(0)
+
+        ############## +DI AND -DI #######
+
+        
+
+        plus_di_values=[100*(x/y) for x,y in zip(plus_dm,atr_values)]
+        negative_di_values=[100*(x/y)for x,y in zip(negative_dm,atr_values)]
 
 
-        main_results=[x-y for x,y in zip(master_high_prices[1:],master_high_prices[0:-1])]
+
+        #########  DX  ######
+
+        dx_values=[x-y  for x,y in zip(plus_di_values,negative_di_values)]
+        print(dx_values)
+
+
+
+
+        
+
+
+
+
         
 
 
