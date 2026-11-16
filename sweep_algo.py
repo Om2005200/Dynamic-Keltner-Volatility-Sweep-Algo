@@ -21,6 +21,8 @@ class KELTNER_ALGO:
         main_data=self.opening_the_main_data()
         master_closing_prices=[]
         bmw=[]
+        master_dx=[]
+        initialized_dx=[]
 
         master_opening_prices=[]
         current_high_prev_close=[]
@@ -176,7 +178,41 @@ class KELTNER_ALGO:
         #########  DX  ######
 
         dx_values=[x-y  for x,y in zip(plus_di_values,negative_di_values)]
-        print(dx_values)
+        master_dx.append(dx_values)
+
+
+
+
+
+
+        ###### INTIALIZED ADX VALUES #####
+
+
+        for initialized_values in master_dx[:14]:
+            initialized_dx__=initialized_values
+
+
+        
+
+        basic_values=sum(initialized_dx__)
+        initialized_dx.append(basic_values)
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
