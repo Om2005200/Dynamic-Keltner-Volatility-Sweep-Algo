@@ -197,7 +197,25 @@ class KELTNER_ALGO:
         basic_values=sum(initialized_dx__)
         initialized_dx.append(basic_values)
 
+
+        ######## ADX CALCULATION #####
+
+
+
+        for jk in dx_values[14:]:
+            for adx in initialized_dx:
+                main_values=((adx * 13) + jk) / 14
+            initialized_dx.append(main_values)
+
         
+        for i,hs,in enumerate(initialized_dx):
+            main_data[i+1]['ADX']=abs(hs)
+
+
+
+
+
+
 
 
 
