@@ -19,6 +19,7 @@ class KELTNER_ALGO:
 
     def analyzing_the_data(self):
         main_data=self.opening_the_main_data()
+        print(len(main_data))
         master_closing_prices=[]
         bmw=[]
         master_dx=[]
@@ -40,6 +41,7 @@ class KELTNER_ALGO:
         main_list=[]
         required_indices=[]
         finalized_values=[]
+        master_volume_data=[]
        
 
         sma_200_list=[]
@@ -52,12 +54,14 @@ class KELTNER_ALGO:
 
             date_data=datas['DATE']
             time_data=datas['TIME']
+            volume_data=datas['VOLUME_DATA']
 
 
             master_closing_prices.append(closing_prices)
             master_opening_prices.append(opening_prices)
             master_high_prices.append(high_prices)
             master_low_prices.append(low_prices)
+            master_volume_data.append(volume_data)
 
 
 
@@ -102,7 +106,7 @@ class KELTNER_ALGO:
 
 
 
-        for x,y,z in zip(current_high_current_low,current_low_prev_close,current_high_current_low):
+        for x,y,z in zip(current_high_current_low,current_low_prev_close,current_high_prev_close):
             maximum_values=max(x,y,z)
             finalized_tr.append(maximum_values)
 
@@ -115,7 +119,7 @@ class KELTNER_ALGO:
             main_vals=finalized_tr.index(sonam)
             if main_vals not in main_list:
                 main_list.append(main_vals)
-            if main_data in main_list:
+            if main_vals in main_list:
                 main_list_last_value=main_list[-1]
                 new_index_value=main_list_last_value+1
                 main_list.append(new_index_value)
@@ -123,8 +127,14 @@ class KELTNER_ALGO:
         new_list_length=len(main_list)
         new_ranger=main_list[0:new_list_length-1]
         main_list.append(new_ranger)
+
+        print(len(main_list))
+
+        required_indices.extend(new_ranger[:10])
         for new_vals in new_ranger[10:]:
             required_indices.append(new_vals)
+
+
         for r,h in zip(new_ranger,required_indices):
             master_values=sum(finalized_tr[r:h])
             finalized_values.append(master_values)
@@ -134,13 +144,15 @@ class KELTNER_ALGO:
         #########  ATR CALCULATION ##########
 
 
-        for finals in finalized_tr[:-1]:
+        for finals in finalized_tr:
             bmw.append(finals)
 
         finalized_values.reverse()
         bmw.reverse()
+        
 
-        finalized_answers=[x*9+y/10 for x,y in zip(bmw,finalized_values[0:-1])]
+        finalized_answers=[x*9+y/10 for x,y in zip(bmw,finalized_values)]
+        print(len(finalized_answers))
         for coco in finalized_answers:
             coca=abs(coco)
             atr_values.append(coca)
@@ -149,7 +161,7 @@ class KELTNER_ALGO:
         for index,his_,in enumerate(atr_values):
             main_data[index+1]['ATR']=abs(his_)
 
-
+        
 
         ############ +DM    & -DM  ############
 
@@ -168,37 +180,47 @@ class KELTNER_ALGO:
 
         ############## +DI AND -DI #######
 
+
+
+
+
+        plus_di_values=[100*(x/y) if y!=0 else 0 for x,y in zip(plus_dm,atr_values)]
+
+        negative_di_values=[100*(x/y) if y!=0 else 0 for x,y in zip(negative_dm,atr_values)]
+
         
+                
+        # plus_di_values=[100*(x/y) for x,y in zip(plus_dm,atr_values)]
+        # negative_di_values=[100*(x/y)for x,y in zip(negative_dm,atr_values)]
 
-        plus_di_values=[100*(x/y) for x,y in zip(plus_dm,atr_values)]
-        negative_di_values=[100*(x/y)for x,y in zip(negative_dm,atr_values)]
 
 
-
-        #########  DX  ######
+        ########  DX  ######
 
         dx_values=[x-y  for x,y in zip(plus_di_values,negative_di_values)]
         master_dx.append(dx_values)
+       
 
 
 
 
+        ##### INTIALIZED ADX VALUES #####
 
 
-        ###### INTIALIZED ADX VALUES #####
-
-
-        for initialized_values in master_dx[:14]:
+        for initialized_values in dx_values[:14]:
             initialized_dx__=initialized_values
+            lk.append(initialized_dx__)
 
 
         
 
-        basic_values=sum(initialized_dx__)
+        basic_values=sum(lk)/14
         initialized_dx.append(basic_values)
-
+      
 
         ######## ADX CALCULATION #####
+
+        
 
 
 
@@ -208,8 +230,17 @@ class KELTNER_ALGO:
             initialized_dx.append(main_values)
 
         
+
         for i,hs,in enumerate(initialized_dx):
-            main_data[i+1]['ADX']=abs(hs)
+            main_data[i+14]['ADX']=abs(hs)
+
+
+
+        #### VWAP CALCULATION #####
+
+
+
+
 
 
 
