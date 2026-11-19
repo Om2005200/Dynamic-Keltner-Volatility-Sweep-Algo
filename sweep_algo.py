@@ -24,6 +24,9 @@ class KELTNER_ALGO:
         bmw=[]
         master_dx=[]
         initialized_dx=[]
+        main_vol_1=[]
+        master_vwap_data=[]
+
 
         master_opening_prices=[]
         current_high_prev_close=[]
@@ -67,7 +70,7 @@ class KELTNER_ALGO:
 
         ######### 200 SMA OPERATIONS ########
         if len(master_closing_prices)<200:
-            print('NOT ENOUGH DATA')
+            #print('NOT ENOUGH DATA')
             return 
 
         length_of_master_list=len(master_closing_prices)
@@ -128,7 +131,7 @@ class KELTNER_ALGO:
         new_ranger=main_list[0:new_list_length-1]
         main_list.append(new_ranger)
 
-        print(len(main_list))
+        #print(len(main_list))
 
         required_indices.extend(new_ranger[:10])
         for new_vals in new_ranger[10:]:
@@ -152,7 +155,7 @@ class KELTNER_ALGO:
         
 
         finalized_answers=[x*9+y/10 for x,y in zip(bmw,finalized_values)]
-        print(len(finalized_answers))
+        #print(len(finalized_answers))
         for coco in finalized_answers:
             coca=abs(coco)
             atr_values.append(coca)
@@ -237,6 +240,36 @@ class KELTNER_ALGO:
 
 
         #### VWAP CALCULATION #####
+        for ki in master_volume_data:
+            main_m=master_volume_data.index(ki)
+
+            if main_m not in main_vol_1:
+                main_vol_1.append(main_m)
+            if main_m in main_vol_1:
+                main_list_values=main_vol_1[-1]
+
+                new_index_pro=main_list_values+1
+                main_vol_1.append(new_index_pro)
+
+        for gulu in main_vol_1[2:]:
+            minus_data=gulu-20
+            main_values_main=sum(master_volume_data[minus_data:gulu])/20
+            master_vwap_data.append(main_values_main)
+
+        for ci,ct,in enumerate(master_vwap_data[:len(main_data)-19]):
+            main_data[ci+19]['VWAP']=abs(ct)
+
+
+            
+        #new_ranger_data
+
+
+
+        
+
+
+
+
 
 
 
