@@ -46,6 +46,7 @@ class KELTNER_ALGO:
         required_indices=[]
         finalized_values=[]
         master_volume_data=[]
+        vma_master=[]
        
 
         sma_200_list=[]
@@ -268,17 +269,33 @@ class KELTNER_ALGO:
         main_value_data=master_closing_prices_data
         ema_master.append(main_value_data)
         multiplier=0.095238
-        for james in master_closing_prices[20:]:
+        for james in master_closing_prices[19:]:
             for bond in ema_master:
                 main_value_list=(james-bond)*multiplier+bond
             ema_master.append(main_value_list)
 
         
-        for ici,ict,in enumerate(ema_master[:len(main_data)-20]):
-            main_data[ici+20]['EMA_20']=abs(ict)
+        for ici,ict,in enumerate(ema_master[:len(main_data)-19]):
+            main_data[ici+19]['EMA_20']=abs(ict)
 
 
-        
+        #######  20 VMA ###########
+
+        master_volume_data_values=sum(master_volume_data[:20])//20
+        main_volume_data=master_volume_data_values
+        vma_master.append(main_volume_data)
+        for pat in master_volume_data[19:]:
+            for son in vma_master:
+                main_vol_list=(pat-son)+son
+            vma_master.append(main_vol_list)
+
+        for tc,jh in enumerate(vma_master[:len(main_data)-19]):
+            main_data[tc+19]['VMA_20']=abs(jh)
+
+
+
+
+
 
 
         
@@ -305,6 +322,11 @@ class KELTNER_ALGO:
         master_vol_values=[]
         master_ema_values=[]
         master_atr_values=[]
+        upper_band_data=[]
+        lower_band_data=[]
+        time_master_data=[]
+        date_master_data=[]
+        vma_master_data=[]
 
 
         
@@ -317,6 +339,11 @@ class KELTNER_ALGO:
             vwap_values=datas['VWAP']
             ema_values=datas['EMA_20']
             atr_values=datas['ATR']
+            time_data=datas['TIME']
+            date_data=datas['DATE']
+            vma_data=datas['VMA']
+
+
             master_close_values.append(closing_prices)
             master_open_values.append(opening_prices)
             master_vwap_values.append(vwap_values)
@@ -324,10 +351,99 @@ class KELTNER_ALGO:
             master_adx_values.append(adx_values)
             master_vol_values.append(vol_values)
             master_ema_values.append(ema_values)
+            time_master_data.append(time_data)
+            vma_master_data.append(vma_data)
+
+
+
+            if date_data not in date_master_data:
+                date_master_data.append(date_data)
+
 
         
         upper_band=[a+(2*b) for a,b in zip(master_ema_values,master_atr_values)]
-         
+        #upper_band_data.append(upper_band)
+
+        lower_band=[a-(2*b) for a,b in zip(master_ema_values,master_atr_values)]
+        #lower_band_data.append(lower_band)
+
+        original_closing_price=master_close_values[-1]
+        current_date_data=date_master_data[-1]
+        current_time_data=time_master_data[-1]
+        current_upper_band_data=upper_band[-1]
+        current_lower_band_data=lower_band[-1]
+        current_vma_value=vma_master_data[-1]
+
+
+
+
+
+        #print(original_closing_price)
+
+
+        
+        #print(date_master_data)
+        for data in main_data:
+            new_closing_prices=data['CLOSE']
+            new_opening_prices=data['OPEN']
+            new_time_data=data['TIME']
+            new_date_data=data['DATE']
+            if new_date_data==current_date_data:
+                if current_time_data==new_time_data:
+
+                    if original_closing_price==new_closing_prices:
+
+                        ######## CURRENT CANDLE IS A GREEN CANDLE ########
+                        green_candle_data=[]
+                        red_candle_data=[]
+
+
+                        if new_closing_prices>new_opening_prices:
+
+
+                            for candles in green_candle_data:
+                                candle_close=candles['CLOSE']
+                                candle_open=candles['OPEN']
+                                candle_dates=candles['DATE']
+                                candle_times=candles['TIME']
+                                candle_vwap=candles['VWAP']
+                                candle_adx=candles['ADX']
+                                candle_vol=candles['VOLUME_DATA']
+                                candle_vma=candles['VMA']
+
+
+
+
+
+                                if candle_close>candle_open:
+                                    if candle_dates==current_date_data:
+                                        if candle_times==current_time_data:
+                                            if current_upper_band_data<candle_close:
+                                                if candle_close>candle_vwap:
+                                                    if candle_adx>25:
+                                                        vol_form=candle_vma*1.5
+
+                                                        if candle_vol>vol_form:
+
+
+                                                            print(candles)
+
+
+                                                            
+
+
+
+
+
+
+
+
+
+
+
+
+
+            
 
 
 
