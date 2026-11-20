@@ -19,13 +19,14 @@ class KELTNER_ALGO:
 
     def analyzing_the_data(self):
         main_data=self.opening_the_main_data()
-        print(len(main_data))
+        #print(len(main_data))
         master_closing_prices=[]
         bmw=[]
         master_dx=[]
         initialized_dx=[]
         main_vol_1=[]
         master_vwap_data=[]
+        ema_master=[]
 
 
         master_opening_prices=[]
@@ -260,77 +261,85 @@ class KELTNER_ALGO:
             main_data[ci+19]['VWAP']=abs(ct)
 
 
+
+        ##########  20 EMA ################
+
+        master_closing_prices_data=sum(master_closing_prices[:20])//20
+        main_value_data=master_closing_prices_data
+        ema_master.append(main_value_data)
+        multiplier=0.095238
+        for james in master_closing_prices[20:]:
+            for bond in ema_master:
+                main_value_list=(james-bond)*multiplier+bond
+            ema_master.append(main_value_list)
+
+        
+        for ici,ict,in enumerate(ema_master[:len(main_data)-20]):
+            main_data[ici+20]['EMA_20']=abs(ict)
+
+
+        
+
+
+        
+        
+
+
             
         #new_ranger_data
 
-
-
-        
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-
-
-
-
-        
-
-
-
-
-
-
-
-
-
-
-        
-        
-
-        
-
-
-
-
-          
-        
-
-
-
-
         with open(r"C:\Users\dasho\divergence_test.json",'w') as ws:
             json.dump(main_data,ws,indent=4)
+
+
+
+
+
+
+    def taking_the_live_positions(self):
+        main_data=self.opening_the_main_data()
+        master_close_values=[]
+        master_open_values=[]
+        master_vwap_values=[]
+        master_adx_values=[]
+        master_vol_values=[]
+        master_ema_values=[]
+        master_atr_values=[]
+
+
+        
+    
+        for datas in main_data:
+            closing_prices=datas['CLOSE']
+            opening_prices=datas['OPEN']
+            adx_values=datas['ADX']
+            vol_values=datas['VOLUME_DATA']
+            vwap_values=datas['VWAP']
+            ema_values=datas['EMA_20']
+            atr_values=datas['ATR']
+            master_close_values.append(closing_prices)
+            master_open_values.append(opening_prices)
+            master_vwap_values.append(vwap_values)
+            master_atr_values.append(atr_values)
+            master_adx_values.append(adx_values)
+            master_vol_values.append(vol_values)
+            master_ema_values.append(ema_values)
+
+        
+        upper_band=[a+(2*b) for a,b in zip(master_ema_values,master_atr_values)]
+         
+
+
+
+
+
+
+
+        
+            
+
+
+
 
 
         
@@ -417,3 +426,6 @@ class KELTNER_ALGO:
 k=KELTNER_ALGO()
 k.opening_the_main_data()
 k.analyzing_the_data()
+
+
+k.taking_the_live_positions()
