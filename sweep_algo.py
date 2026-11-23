@@ -139,10 +139,18 @@ class KELTNER_ALGO:
         for new_vals in new_ranger[10:]:
             required_indices.append(new_vals)
 
+        print(required_indices)
+        print(new_ranger)
+
 
         for r,h in zip(new_ranger,required_indices):
             master_values=sum(finalized_tr[r:h])
+            #print(master_values)
             finalized_values.append(master_values)
+
+        #print(finalized_values)
+
+        
 
 
 
@@ -156,142 +164,142 @@ class KELTNER_ALGO:
         bmw.reverse()
         
 
-    #     finalized_answers=[x*9+y/10 for x,y in zip(bmw,finalized_values)]
-    #     #print(len(finalized_answers))
-    #     for coco in finalized_answers:
-    #         coca=abs(coco)
-    #         atr_values.append(coca)
+        finalized_answers=[x*9+y/10 for x,y in zip(bmw,finalized_values)]
+        #print(len(finalized_answers))
+        for coco in finalized_answers:
+            coca=abs(coco)
+            atr_values.append(coca)
 
 
-    #     for index,his_,in enumerate(atr_values):
-    #         main_data[index+1]['ATR']=abs(his_)
+        for index,his_,in enumerate(atr_values):
+            main_data[index+1]['ATR']=abs(his_)
 
 
         
 
-    #     ############ +DM    & -DM  ############
+        ############ +DM    & -DM  ############
 
-    #     plus_dm_results=[x-y for x,y in zip(master_high_prices[1:],master_high_prices[0:-1])]
-    #     negative_dm_results=[x-y for x,y  in zip(master_low_prices[1:],master_low_prices[0:-1])]
-    #     for val,vals in zip(plus_dm_results,negative_dm_results):
-    #         if val>vals:
-    #             plus_dm.append(val)
-    #             negative_dm.append(0)
-    #         elif val<vals:
-    #             negative_dm.append(vals)
-    #             plus_dm.append(0)
-    #         elif val==vals:
-    #             negative_dm.append(0)
-    #             plus_dm.append(0)
+        plus_dm_results=[x-y for x,y in zip(master_high_prices[1:],master_high_prices[0:-1])]
+        negative_dm_results=[x-y for x,y  in zip(master_low_prices[1:],master_low_prices[0:-1])]
+        for val,vals in zip(plus_dm_results,negative_dm_results):
+            if val>vals:
+                plus_dm.append(val)
+                negative_dm.append(0)
+            elif val<vals:
+                negative_dm.append(vals)
+                plus_dm.append(0)
+            elif val==vals:
+                negative_dm.append(0)
+                plus_dm.append(0)
 
-    #     ############## +DI AND -DI #######
-
-
+        ############## +DI AND -DI #######
 
 
 
-    #     plus_di_values=[100*(x/y) if y!=0 else 0 for x,y in zip(plus_dm,atr_values)]
 
-    #     negative_di_values=[100*(x/y) if y!=0 else 0 for x,y in zip(negative_dm,atr_values)]
+
+        plus_di_values=[100*(x/y) if y!=0 else 0 for x,y in zip(plus_dm,atr_values)]
+
+        negative_di_values=[100*(x/y) if y!=0 else 0 for x,y in zip(negative_dm,atr_values)]
 
         
                 
-    #     # plus_di_values=[100*(x/y) for x,y in zip(plus_dm,atr_values)]
-    #     # negative_di_values=[100*(x/y)for x,y in zip(negative_dm,atr_values)]
+        # plus_di_values=[100*(x/y) for x,y in zip(plus_dm,atr_values)]
+        # negative_di_values=[100*(x/y)for x,y in zip(negative_dm,atr_values)]
 
 
 
-    #     ########  DX  ######
+        ########  DX  ######
 
-    #     dx_values=[x-y  for x,y in zip(plus_di_values,negative_di_values)]
-    #     master_dx.append(dx_values)
+        dx_values=[x-y  for x,y in zip(plus_di_values,negative_di_values)]
+        master_dx.append(dx_values)
        
 
 
 
 
-    #     ##### INTIALIZED ADX VALUES #####
+        ##### INTIALIZED ADX VALUES #####
 
 
-    #     for initialized_values in dx_values[:14]:
-    #         initialized_dx__=initialized_values
-    #         lk.append(initialized_dx__)
+        for initialized_values in dx_values[:14]:
+            initialized_dx__=initialized_values
+            lk.append(initialized_dx__)
 
 
         
 
-    #     basic_values=sum(lk)/14
-    #     initialized_dx.append(basic_values)
+        basic_values=sum(lk)/14
+        initialized_dx.append(basic_values)
       
 
-    #     ######## ADX CALCULATION #####
+        ######## ADX CALCULATION #####
 
         
 
 
 
-    #     for jk in dx_values[14:]:
-    #         for adx in initialized_dx:
-    #             main_values=((adx * 13) + jk) / 14
-    #         initialized_dx.append(main_values)
+        for jk in dx_values[14:]:
+            for adx in initialized_dx:
+                main_values=((adx * 13) + jk) / 14
+            initialized_dx.append(main_values)
 
         
 
-    #     for i,hs,in enumerate(initialized_dx):
-    #         main_data[i+14]['ADX']=abs(hs)
+        for i,hs,in enumerate(initialized_dx):
+            main_data[i+14]['ADX']=abs(hs)
 
 
 
-    #     #### VWAP CALCULATION #####
-    #     for ki in master_volume_data:
-    #         main_m=master_volume_data.index(ki)
+        #### VWAP CALCULATION #####
+        for ki in master_volume_data:
+            main_m=master_volume_data.index(ki)
 
-    #         if main_m not in main_vol_1:
-    #             main_vol_1.append(main_m)
-    #         if main_m in main_vol_1:
-    #             main_list_values=main_vol_1[-1]
+            if main_m not in main_vol_1:
+                main_vol_1.append(main_m)
+            if main_m in main_vol_1:
+                main_list_values=main_vol_1[-1]
 
-    #             new_index_pro=main_list_values+1
-    #             main_vol_1.append(new_index_pro)
+                new_index_pro=main_list_values+1
+                main_vol_1.append(new_index_pro)
 
-    #     for gulu in main_vol_1[2:]:
-    #         minus_data=gulu-20
-    #         main_values_main=sum(master_volume_data[minus_data:gulu])/20
-    #         master_vwap_data.append(main_values_main)
+        for gulu in main_vol_1[2:]:
+            minus_data=gulu-20
+            main_values_main=sum(master_volume_data[minus_data:gulu])/20
+            master_vwap_data.append(main_values_main)
 
-    #     for ci,ct,in enumerate(master_vwap_data[:len(main_data)-19]):
-    #         main_data[ci+19]['VWAP']=abs(ct)
+        for ci,ct,in enumerate(master_vwap_data[:len(main_data)-19]):
+            main_data[ci+19]['VWAP']=abs(ct)
 
 
 
-    #     ##########  20 EMA ################
+        ##########  20 EMA ################
 
-    #     master_closing_prices_data=sum(master_closing_prices[:20])//20
-    #     main_value_data=master_closing_prices_data
-    #     ema_master.append(main_value_data)
-    #     multiplier=0.095238
-    #     for james in master_closing_prices[19:]:
-    #         for bond in ema_master:
-    #             main_value_list=(james-bond)*multiplier+bond
-    #         ema_master.append(main_value_list)
+        master_closing_prices_data=sum(master_closing_prices[:20])//20
+        main_value_data=master_closing_prices_data
+        ema_master.append(main_value_data)
+        multiplier=0.095238
+        for james in master_closing_prices[19:]:
+            for bond in ema_master:
+                main_value_list=(james-bond)*multiplier+bond
+            ema_master.append(main_value_list)
 
         
-    #     for ici,ict,in enumerate(ema_master[:len(main_data)-19]):
-    #         main_data[ici+19]['EMA_20']=abs(ict)
+        for ici,ict,in enumerate(ema_master[:len(main_data)-19]):
+            main_data[ici+19]['EMA_20']=abs(ict)
 
 
-    #     #######  20 VMA ###########
+        #######  20 VMA ###########
 
-    #     master_volume_data_values=sum(master_volume_data[:20])//20
-    #     main_volume_data=master_volume_data_values
-    #     vma_master.append(main_volume_data)
-    #     for pat in master_volume_data[19:]:
-    #         for son in vma_master:
-    #             main_vol_list=(pat-son)+son
-    #         vma_master.append(main_vol_list)
+        master_volume_data_values=sum(master_volume_data[:20])//20
+        main_volume_data=master_volume_data_values
+        vma_master.append(main_volume_data)
+        for pat in master_volume_data[19:]:
+            for son in vma_master:
+                main_vol_list=(pat-son)+son
+            vma_master.append(main_vol_list)
 
-    #     for tc,jh in enumerate(vma_master[:len(main_data)-19]):
-    #         main_data[tc+19]['VMA_20']=abs(jh)
+        for tc,jh in enumerate(vma_master[:len(main_data)-19]):
+            main_data[tc+19]['VMA_20']=abs(jh)
 
 
 
@@ -304,103 +312,103 @@ class KELTNER_ALGO:
 
 
             
-    #     #new_ranger_data
+        #new_ranger_data
 
-    #     with open(r"C:\Users\dasho\divergence_test.json",'w') as ws:
-    #         json.dump(main_data,ws,indent=4)
-
-
+        with open(r"C:\Users\dasho\divergence_test.json",'w') as ws:
+            json.dump(main_data,ws,indent=4)
 
 
 
 
-    # def taking_the_live_positions(self):
-    #     main_data=self.opening_the_main_data()
-    #     master_close_values=[]
-    #     master_open_values=[]
-    #     master_vwap_values=[]
-    #     master_adx_values=[]
-    #     master_vol_values=[]
-    #     master_ema_values=[]
-    #     master_atr_values=[]
-    #     upper_band_data=[]
-    #     lower_band_data=[]
-    #     time_master_data=[]
-    #     date_master_data=[]
-    #     vma_master_data=[]
+
+
+    def taking_the_live_positions(self):
+        main_data=self.opening_the_main_data()
+        master_close_values=[]
+        master_open_values=[]
+        master_vwap_values=[]
+        master_adx_values=[]
+        master_vol_values=[]
+        master_ema_values=[]
+        master_atr_values=[]
+        upper_band_data=[]
+        lower_band_data=[]
+        time_master_data=[]
+        date_master_data=[]
+        vma_master_data=[]
 
 
         
     
-    #     for datas in main_data:
-    #         closing_prices=datas['CLOSE']
-    #         opening_prices=datas['OPEN']
-    #         adx_values=datas['ADX']
-    #         vol_values=datas['VOLUME_DATA']
-    #         vwap_values=datas['VWAP']
-    #         ema_values=datas['EMA_20']
-    #         atr_values=datas['ATR']
-    #         time_data=datas['TIME']
-    #         date_data=datas['DATE']
-    #         vma_data=datas['VMA_20']
+        for datas in main_data:
+            closing_prices=datas['CLOSE']
+            opening_prices=datas['OPEN']
+            adx_values=datas['ADX']
+            vol_values=datas['VOLUME_DATA']
+            vwap_values=datas['VWAP']
+            ema_values=datas['EMA_20']
+            atr_values=datas['ATR']
+            time_data=datas['TIME']
+            date_data=datas['DATE']
+            vma_data=datas['VMA_20']
 
 
-    #         master_close_values.append(closing_prices)
-    #         master_open_values.append(opening_prices)
-    #         master_vwap_values.append(vwap_values)
-    #         master_atr_values.append(atr_values)
-    #         master_adx_values.append(adx_values)
-    #         master_vol_values.append(vol_values)
-    #         master_ema_values.append(ema_values)
-    #         time_master_data.append(time_data)
-    #         vma_master_data.append(vma_data)
+            master_close_values.append(closing_prices)
+            master_open_values.append(opening_prices)
+            master_vwap_values.append(vwap_values)
+            master_atr_values.append(atr_values)
+            master_adx_values.append(adx_values)
+            master_vol_values.append(vol_values)
+            master_ema_values.append(ema_values)
+            time_master_data.append(time_data)
+            vma_master_data.append(vma_data)
 
 
 
-    #         if date_data not in date_master_data:
-    #             date_master_data.append(date_data)
+            if date_data not in date_master_data:
+                date_master_data.append(date_data)
 
 
         
-    #     upper_band=[a+(2*b) for a,b in zip(master_ema_values,master_atr_values)]
-    #     #upper_band_data.append(upper_band)
+        upper_band=[a+(2*b) for a,b in zip(master_ema_values,master_atr_values)]
+        #upper_band_data.append(upper_band)
 
-    #     lower_band=[a-(2*b) for a,b in zip(master_ema_values,master_atr_values)]
-    #     #lower_band_data.append(lower_band)
+        lower_band=[a-(2*b) for a,b in zip(master_ema_values,master_atr_values)]
+        #lower_band_data.append(lower_band)
 
-    #     original_closing_price=master_close_values[-1]
-    #     current_date_data=date_master_data[-1]
-    #     current_time_data=time_master_data[-1]
-    #     current_upper_band_data=upper_band[-1]
-    #     print(current_upper_band_data)
+        original_closing_price=master_close_values[-1]
+        current_date_data=date_master_data[-1]
+        current_time_data=time_master_data[-1]
+        current_upper_band_data=upper_band[-1]
+        print(current_upper_band_data)
         
-    #     current_lower_band_data=lower_band[-1]
-    #     print(current_lower_band_data)
-    #     current_vma_value=vma_master_data[-1]
+        current_lower_band_data=lower_band[-1]
+        print(current_lower_band_data)
+        current_vma_value=vma_master_data[-1]
 
 
-    #     for data in main_data:
-    #         main_closing_price=data['CLOSE']
-    #         main_opening_price=data['OPEN']
-    #         main_date_data=data['DATE']
-    #         main_time_data=data['TIME']
-    #         main_vwap=data['VWAP']
-    #         main_adx=data['ADX']
-    #         main_vol=data['VOLUME_DATA']
+        for data in main_data:
+            main_closing_price=data['CLOSE']
+            main_opening_price=data['OPEN']
+            main_date_data=data['DATE']
+            main_time_data=data['TIME']
+            main_vwap=data['VWAP']
+            main_adx=data['ADX']
+            main_vol=data['VOLUME_DATA']
 
-    #         if main_closing_price==original_closing_price:
-    #             if main_date_data==current_date_data:
-    #                 if main_time_data==current_time_data:
+            if main_closing_price==original_closing_price:
+                if main_date_data==current_date_data:
+                    if main_time_data==current_time_data:
 
 
 
                         
-    #                     if main_closing_price>main_opening_price:
+                        if main_closing_price>main_opening_price:
 
 
-    #                         if main_closing_price>current_upper_band_data:
-    #                             if main_closing_price>main_vwap:
-    #                                 if 
+                            if main_closing_price>current_upper_band_data:
+                                if main_closing_price>main_vwap:
+                                    pass
 
                                
 
