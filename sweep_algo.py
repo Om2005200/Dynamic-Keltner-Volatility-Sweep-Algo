@@ -395,10 +395,14 @@ class KELTNER_ALGO:
             main_vwap=data['VWAP']
             main_adx=data['ADX']
             main_vol=data['VOLUME_DATA']
+            main_vma=data['VMA_20']
 
             if main_closing_price==original_closing_price:
                 if main_date_data==current_date_data:
                     if main_time_data==current_time_data:
+                        finalized_green_candle=[]
+                        finalized_red_candle=[]
+
 
 
 
@@ -408,7 +412,28 @@ class KELTNER_ALGO:
 
                             if main_closing_price>current_upper_band_data:
                                 if main_closing_price>main_vwap:
-                                    pass
+
+                                    if main_adx>25:
+                                        if main_vol>1.5*main_vma:
+                                            finalized_green_candle.append(data)
+
+                        if finalized_green_candle is not None:
+
+
+                            print(finalized_green_candle)
+
+
+                        elif main_closing_price<main_closing_price:
+                            if main_closing_price<current_lower_band_data:
+                                if main_closing_price<main_vwap:
+                                    if main_adx>25:
+                                        if main_vol>1.5*main_vma:
+                                            finalized_red_candle.append(data)
+
+                        if finalized_red_candle is not None:
+                            print(finalized_red_candle)
+                            
+
 
                                
 
